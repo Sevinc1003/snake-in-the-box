@@ -18,40 +18,42 @@ let nextDirection = { x: 0, y: 0 };
 // Nöqtələr
 let normalFood = { x: -1, y: -1 };
 let goldFood = { x: -1, y: -1 };
-let goldFoodTimer = 0; // Qızıl nöqtənin ekranda qalma vaxtı
+let goldFoodTimer = 0; 
 
-let score = 0;
-let level = 1;
+let score = 0;       // Ümumi oyun xalı
+let levelScore = 0;  // Cari səviyyədə yığılan xal (Hər səviyyədə 0-lanır)
+let level = 1;       // Səviyyə nömrəsi
 let gameInterval;
 let gameRunning = false;
 let walls = [];
 
-// Portallar
-let nextLevelPortal = { x: -1, y: -1 }; // Növbəti otağa keçid portalı
-let portalOpen = false;
+// Səviyyə keçid vəziyyəti (Xətanın qarşısını alan əsas dəyişən)
+let isLevelCleared = false; 
 
-// Otaq daxili teleport portalları (Giriş və Çıxış cütlükləri)
+// Portallar
+let nextLevelPortal = { x: -1, y: -1 }; 
+let portalOpen = false;
 let teleports = []; 
 
-// 5 Səviyyə üçün divar xəritələri
+// 5 Səviyyə üçün FƏRQLİ və MANEƏLİ divar xəritələri
 const levelWalls = {
-    1: [], // Level 1: Divarsız, sadəcə nöqtə yığmaq
-    2: [   // Level 2: Ortada düz divar
-        {x: 5, y: 10}, {x: 6, y: 10}, {x: 7, y: 10}, {x: 8, y: 10},
-        {x: 11, y: 10}, {x: 12, y: 10}, {x: 13, y: 10}, {x: 14, y: 10}
+    1: [], // Səviyyə 1: Maneəsiz rahat otaq
+    2: [   // Səviyyə 2: Ortada üfüqi kərpic divarlar
+        {x: 4, y: 10}, {x: 5, y: 10}, {x: 6, y: 10}, {x: 7, y: 10},
+        {x: 12, y: 10}, {x: 13, y: 10}, {x: 14, y: 10}, {x: 15, y: 10}
     ],
-    3: [   // Level 3: H hərfi forması + Teleportlar aktivləşir
+    3: [   // Səviyyə 3: "H" hərfi forması + Teleportlar kənarda açılır
         {x: 4, y: 5}, {x: 4, y: 6}, {x: 4, y: 7}, {x: 4, y: 12}, {x: 4, y: 13}, {x: 4, y: 14},
         {x: 15, y: 5}, {x: 15, y: 6}, {x: 15, y: 7}, {x: 15, y: 12}, {x: 15, y: 13}, {x: 15, y: 14},
         {x: 5, y: 10}, {x: 6, y: 10}, {x: 13, y: 10}, {x: 14, y: 10}
     ],
-    4: [   // Level 4: Kənar qutular
+    4: [   // Səviyyə 4: Künclərdə dördbucaq maneə qutuları
         {x: 3, y: 3}, {x: 4, y: 3}, {x: 5, y: 3}, {x: 3, y: 4}, {x: 3, y: 5},
         {x: 16, y: 3}, {x: 15, y: 3}, {x: 14, y: 3}, {x: 16, y: 4}, {x: 16, y: 5},
         {x: 3, y: 16}, {x: 4, y: 16}, {x: 5, y: 16}, {x: 3, y: 15}, {x: 3, y: 14},
         {x: 16, y: 16}, {x: 15, y: 16}, {x: 14, y: 16}, {x: 16, y: 15}, {x: 16, y: 14}
     ],
-    5: [   // Level 5: Tam Labirint (Maksimum çətinlik)
+    5: [   // Səviyyə 5: Tam Labirint otağı (Maksimum çətinlik)
         {x: 2, y: 5}, {x: 3, y: 5}, {x: 4, y: 5}, {x: 5, y: 5}, {x: 6, y: 5},
         {x: 13, y: 5}, {x: 14, y: 5}, {x: 15, y: 5}, {x: 16, y: 5}, {x: 17, y: 5},
         {x: 9, y: 8}, {x: 10, y: 8}, {x: 9, y: 9}, {x: 10, y: 9},
@@ -59,25 +61,25 @@ const levelWalls = {
     ]
 };
 
-// Səviyyələrə uyğun Teleport Portallarının yerləri (Divarların kənarında)
+// Səviyyələrin Teleport keçidləri
 const levelTeleports = {
     1: [],
     2: [],
     3: [
-        { name: 'A', x: 0, y: 10, targetX: 19, targetY: 10 },
-        { name: 'B', x: 19, y: 10, targetX: 0, targetY: 10 }
+        { x: 0, y: 10, targetX: 19, targetY: 10 },
+        { x: 19, y: 10, targetX: 0, targetY: 10 }
     ],
     4: [
-        { name: 'A', x: 0, y: 9, targetX: 19, targetY: 9 },
-        { name: 'B', x: 19, y: 9, targetX: 0, targetY: 9 },
-        { name: 'C', x: 9, y: 0, targetX: 9, targetY: 19 },
-        { name: 'D', x: 9, y: 19, targetX: 9, targetY: 0 }
+        { x: 0, y: 9, targetX: 19, targetY: 9 },
+        { x: 19, y: 9, targetX: 0, targetY: 9 },
+        { x: 9, y: 0, targetX: 9, targetY: 19 },
+        { x: 9, y: 19, targetX: 9, targetY: 0 }
     ],
     5: [
-        { name: 'A', x: 0, y: 2, targetX: 19, targetY: 17 },
-        { name: 'B', x: 19, y: 17, targetX: 0, targetY: 2 },
-        { name: 'C', x: 0, y: 17, targetX: 19, targetY: 2 },
-        { name: 'D', x: 19, y: 2, targetX: 0, targetY: 17 }
+        { x: 0, y: 2, targetX: 19, targetY: 17 },
+        { x: 19, y: 17, targetX: 0, targetY: 2 },
+        { x: 0, y: 17, targetX: 19, targetY: 2 },
+        { x: 19, y: 2, targetX: 0, targetY: 17 }
     ]
 };
 
@@ -90,17 +92,20 @@ window.addEventListener('keydown', e => {
     }
 });
 
+// Düyməyə klikləyəndə işləyən idarəetmə panelinin düzgün məntiqi
 msgOverlay.addEventListener('click', () => {
     if (!gameRunning) {
-        if (msgTitle.innerText.includes("TƏBRİKLƏR")) {
+        if (isLevelCleared) {
+            // Əgər səviyyə uğurla keçilibsə
             if (level === 5) {
-                level = 1; // 5-i bitirəndə sıfırla
+                level = 1; 
                 score = 0;
             } else {
-                level++;
+                level++; // Səviyyə nömrəsini 1 artırırıq
             }
             startLevel();
         } else {
+            // Əgər ilan ölübsə, oyunu tam sıfırdan başladırıq
             level = 1;
             score = 0;
             startLevel();
@@ -109,6 +114,7 @@ msgOverlay.addEventListener('click', () => {
 });
 
 function startLevel() {
+    // İlanı hər dəfə təhlükəsiz mövqedə başladırıq
     snake = [
         { x: 10, y: 14 },
         { x: 10, y: 15 },
@@ -117,13 +123,18 @@ function startLevel() {
     direction = { x: 0, y: -1 }; 
     nextDirection = { x: 0, y: -1 };
     
+    // Yeni otağın divarlarını və portallarını yükləyirik
     walls = levelWalls[level] || [];
     teleports = levelTeleports[level] || [];
     
+    // UI göstəricilərini yeniləyirik
     levelDisplay.innerText = level;
     scoreDisplay.innerText = score;
     
+    // Cari səviyyə xalını sıfırlayırıq
+    levelScore = 0;
     portalOpen = false;
+    isLevelCleared = false;
     nextLevelPortal = { x: -1, y: -1 };
     goldFood = { x: -1, y: -1 };
     goldFoodTimer = 0;
@@ -134,8 +145,8 @@ function startLevel() {
     gameRunning = true;
     
     clearInterval(gameInterval);
-    // Sürət ayarı (Rahat oynamaq üçün yavaş başladırıq)
-    let speed = Math.max(100, 260 - (level * 25)); 
+    // Səviyyə artdıqca oyun bir az da sürətlənir
+    let speed = Math.max(90, 250 - (level * 25)); 
     gameInterval = setInterval(update, speed);
 }
 
@@ -165,7 +176,7 @@ function generateGoldFood() {
         let onTeleport = teleports.some(t => t.x === goldFood.x && t.y === goldFood.y);
         
         if (!onSnake && !onWall && !onNormalFood && !onTeleport) {
-            goldFoodTimer = 35; // Qızıl nöqtə 35 hərəkət addımı boyunca ekranda qalacaq
+            goldFoodTimer = 40; // Ekrandan silinmə müddəti
             break;
         }
     }
@@ -177,41 +188,39 @@ function openNextLevelPortal() {
     goldFood = { x: -1, y: -1 };
     goldFoodTimer = 0;
     
-    // Portal divarlardan uzaq bir yerdə, mərkəzə yaxın açılsın
-    nextLevelPortal = { x: 10, y: 2 };
+    // Keçid portalını yuxarı mərkəzdə açırıq
+    nextLevelPortal = { x: 10, y: 1 };
 }
 
 function update() {
     direction = nextDirection;
     let head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
     
-    // 1. Otaq daxili Teleport Portallarına toxunma yoxlanışı
+    // Teleport Portalları mexanikası
     let activeTeleport = teleports.find(t => t.x === head.x && t.y === head.y);
     if (activeTeleport) {
-        // İlanın başını digər portalın çıxış koordinatına atırıq
         head.x = activeTeleport.targetX;
         head.y = activeTeleport.targetY;
     } else {
-        // Əgər teleport portalı deyilsə və xəritə kənarıdırsa - ÖLÜM
         if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
             gameOver();
             return;
         }
     }
 
-    // 2. Növbəti otağa keçid portalı yoxlanışı
+    // Portalın içinə girmə yoxlanışı
     if (portalOpen && head.x === nextLevelPortal.x && head.y === nextLevelPortal.y) {
         levelComplete();
         return;
     }
     
-    // 3. Divara dəymə yoxlanışı
+    // Divara dəymə yoxlanışı
     if (walls.some(w => w.x === head.x && w.y === head.y)) {
         gameOver();
         return;
     }
     
-    // 4. Özünə dəymə yoxlanışı
+    // Özünə dəymə yoxlanışı
     if (snake.some(part => part.x === head.x && part.y === head.y)) {
         gameOver();
         return;
@@ -219,42 +228,43 @@ function update() {
     
     snake.unshift(head);
     
-    // Normal yemək yeyiləndə (+10 xal)
+    // Normal yemək
     if (!portalOpen && head.x === normalFood.x && head.y === normalFood.y) {
         score += 10;
+        levelScore += 10;
         scoreDisplay.innerText = score;
         
-        // Hər 40 xaldan bir təsadüfi qızıl nöqtə çıxma şansı
-        if (score % 40 === 0 && goldFoodTimer === 0) {
+        // Hər 30 xaldan bir qızıl nöqtə çıxma şansı
+        if (levelScore === 30 && goldFoodTimer === 0) {
             generateGoldFood();
         }
         
-        // Hər mərhələdə 60 xal yığanda növbəti otağın portalı açılır
-        if (score > 0 && score % 60 === 0) {
+        // Bu səviyyədə 60 xal yığıldısa, keçid portalını aç
+        if (levelScore >= 60) {
             openNextLevelPortal();
         } else {
             generateNormalFood();
         }
     } 
-    // Qızıl yemək yeyiləndə (+30 xal - daha çox xal!)
+    // Qızıl yemək
     else if (!portalOpen && goldFoodTimer > 0 && head.x === goldFood.x && head.y === goldFood.y) {
         score += 30;
+        levelScore += 30;
         scoreDisplay.innerText = score;
         goldFood = { x: -1, y: -1 };
         goldFoodTimer = 0;
         
-        if (score > 0 && score % 60 === 0) {
+        if (levelScore >= 60) {
             openNextLevelPortal();
         }
     } else {
         snake.pop();
     }
     
-    // Qızıl nöqtənin vaxtını azatlıq
     if (goldFoodTimer > 0) {
         goldFoodTimer--;
         if (goldFoodTimer === 0) {
-            goldFood = { x: -1, y: -1 }; // Vaxt bitdi, yox et
+            goldFood = { x: -1, y: -1 };
         }
     }
     
@@ -264,13 +274,13 @@ function update() {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Maneə Divarları (Tünd Kərpic Rəngi)
+    // Maneə Divarları
     ctx.fillStyle = "#2e1a05"; 
     walls.forEach(w => {
         ctx.fillRect(w.x * gridSize, w.y * gridSize, gridSize - 1, gridSize - 1);
     });
     
-    // Teleport Portalları (Bənövşəyi - Kənarlarda olur)
+    // Teleport Portalları (Bənövşəyi)
     ctx.fillStyle = "#8a2be2";
     teleports.forEach(t => {
         ctx.fillRect(t.x * gridSize, t.y * gridSize, gridSize, gridSize);
@@ -278,7 +288,7 @@ function draw() {
         ctx.strokeRect(t.x * gridSize + 3, t.y * gridSize + 3, gridSize - 6, gridSize - 6);
     });
     
-    // Növbəti Otağa Keçid Portalı (Açıq Mavi)
+    // Keçid Portalı (Mavi)
     if (portalOpen) {
         ctx.fillStyle = "#00bfff"; 
         ctx.fillRect(nextLevelPortal.x * gridSize, nextLevelPortal.y * gridSize, gridSize, gridSize);
@@ -286,19 +296,19 @@ function draw() {
         ctx.strokeRect(nextLevelPortal.x * gridSize + 2, nextLevelPortal.y * gridSize + 2, gridSize - 4, gridSize - 4);
     }
     
-    // İlan (Yaşıl retro stil)
+    // İlan
     snake.forEach((part, index) => {
         ctx.fillStyle = index === 0 ? "#051105" : "#1c3c1e";
         ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize - 2, gridSize - 2);
     });
     
-    // Normal Nöqtə (Kiçik kvadrat)
+    // Normal Nöqtə
     if (!portalOpen) {
         ctx.fillStyle = "#0f2510";
         ctx.fillRect(normalFood.x * gridSize + 5, normalFood.y * gridSize + 5, gridSize - 10, gridSize - 10);
     }
     
-    // Saniyəli Qızıl Nöqtə (Göz qamaşdıran Sarı - əgər aktivdirsə)
+    // Qızıl Nöqtə
     if (!portalOpen && goldFoodTimer > 0) {
         ctx.fillStyle = "#ffd700";
         ctx.fillRect(goldFood.x * gridSize + 3, goldFood.y * gridSize + 3, gridSize - 6, gridSize - 6);
@@ -307,6 +317,7 @@ function draw() {
 
 function gameOver() {
     gameRunning = false;
+    isLevelCleared = false; // Keçid statusunu ləğv et
     clearInterval(gameInterval);
     msgTitle.innerText = "OYUN BİTDİ";
     msgSub.innerText = "Yenidən başlamaq üçün klikləyin";
@@ -315,15 +326,19 @@ function gameOver() {
 
 function levelComplete() {
     gameRunning = false;
+    isLevelCleared = true; // Səviyyə uğurla keçildi!
     clearInterval(gameInterval);
+    
     if (level === 5) {
-        msgTitle.innerText = "KAPİTAN, QALİB GƏLDİNİZ!";
-        msgSub.innerText = "Bütün otaqları təmizlədiniz. Yenidən oynamaq üçün klikləyin.";
+        msgTitle.innerText = "TEBRİKLƏR, QALİBSİNİZ!";
+        msgSub.innerText = "Bütün 5 otağı tam təmizlədiniz! Yenidən oynamaq üçün klikləyin.";
     } else {
         msgTitle.innerText = "OTAQ TAMAMLANDI!";
-        msgSub.innerText = `Portaldan keçdin! Seviyyə ${level + 1} üçün klikləyin.`;
+        // İndi sən istədiyin kimi növbəti səviyyənin nömrəsini dinamik göstərir:
+        msgSub.innerText = `Portaldan keçdin! Seviyyə ${level + 1} üçün bura klikləyin.`;
     }
     msgOverlay.style.display = 'flex';
 }
 
+// Oyunu ilk dəfə açanda başlat
 startLevel();
