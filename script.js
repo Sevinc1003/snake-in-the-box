@@ -21,7 +21,6 @@ let snake = [];
 let direction = { x: 0, y: 0 };
 let nextDirection = { x: 0, y: 0 };
 
-// Nöqtələr
 let normalFood = { x: -1, y: -1 };
 let goldFood = { x: -1, y: -1 };
 let goldFoodTimer = 0; 
@@ -32,15 +31,12 @@ let level = 1;
 let gameInterval;
 let gameRunning = false;
 let walls = [];
-
 let isLevelCleared = false; 
 
-// Portallar
 let nextLevelPortal = { x: -1, y: -1 }; 
 let portalOpen = false;
 let teleports = []; 
 
-// 5 Səviyyə üçün divar xəritələri
 // Seçilmiş Dizayn Dəyişənləri (Default: İlk düymələr)
 let chosenSkin = "classic";
 let chosenMap = "retro";
@@ -48,47 +44,17 @@ let chosenFood = "square";
 
 const levelWalls = {
     1: [], 
-    2: [   
-        {x: 4, y: 10}, {x: 5, y: 10}, {x: 6, y: 10}, {x: 7, y: 10},
-        {x: 12, y: 10}, {x: 13, y: 10}, {x: 14, y: 10}, {x: 15, y: 10}
-    ],
-    3: [   
-        {x: 4, y: 5}, {x: 4, y: 6}, {x: 4, y: 7}, {x: 4, y: 12}, {x: 4, y: 13}, {x: 4, y: 14},
-        {x: 15, y: 5}, {x: 15, y: 6}, {x: 15, y: 7}, {x: 15, y: 12}, {x: 15, y: 13}, {x: 15, y: 14},
-        {x: 5, y: 10}, {x: 6, y: 10}, {x: 13, y: 10}, {x: 14, y: 10}
-    ],
-    4: [   
-        {x: 3, y: 3}, {x: 4, y: 3}, {x: 5, y: 3}, {x: 3, y: 4}, {x: 3, y: 5},
-        {x: 16, y: 3}, {x: 15, y: 3}, {x: 14, y: 3}, {x: 16, y: 4}, {x: 16, y: 5},
-        {x: 3, y: 16}, {x: 4, y: 16}, {x: 5, y: 16}, {x: 3, y: 15}, {x: 3, y: 14},
-        {x: 16, y: 16}, {x: 15, y: 16}, {x: 14, y: 16}, {x: 16, y: 15}, {x: 16, y: 14}
-    ],
-    5: [   
-        {x: 2, y: 5}, {x: 3, y: 5}, {x: 4, y: 5}, {x: 5, y: 5}, {x: 6, y: 5},
-        {x: 13, y: 5}, {x: 14, y: 5}, {x: 15, y: 5}, {x: 16, y: 5}, {x: 17, y: 5},
-        {x: 9, y: 8}, {x: 10, y: 8}, {x: 9, y: 9}, {x: 10, y: 9},
-        {x: 5, y: 12}, {x: 6, y: 12}, {x: 7, y: 12}, {x: 12, y: 12}, {x: 13, y: 12}, {x: 14, y: 12}
-    ]
+    2: [{x: 4, y: 10}, {x: 5, y: 10}, {x: 6, y: 10}, {x: 7, y: 10}, {x: 12, y: 10}, {x: 13, y: 10}, {x: 14, y: 10}, {x: 15, y: 10}],
+    3: [{x: 4, y: 5}, {x: 4, y: 6}, {x: 4, y: 7}, {x: 4, y: 12}, {x: 4, y: 13}, {x: 4, y: 14}, {x: 15, y: 5}, {x: 15, y: 6}, {x: 15, y: 7}, {x: 15, y: 12}, {x: 15, y: 13}, {x: 15, y: 14}, {x: 5, y: 10}, {x: 6, y: 10}, {x: 13, y: 10}, {x: 14, y: 10}],
+    4: [{x: 3, y: 3}, {x: 4, y: 3}, {x: 5, y: 3}, {x: 3, y: 4}, {x: 3, y: 5}, {x: 16, y: 3}, {x: 15, y: 3}, {x: 14, y: 3}, {x: 16, y: 4}, {x: 16, y: 5}, {x: 3, y: 16}, {x: 4, y: 16}, {x: 5, y: 16}, {x: 3, y: 15}, {x: 3, y: 14}, {x: 16, y: 16}, {x: 15, y: 16}, {x: 14, y: 16}, {x: 16, y: 15}, {x: 16, y: 14}],
+    5: [{x: 2, y: 5}, {x: 3, y: 5}, {x: 4, y: 5}, {x: 5, y: 5}, {x: 6, y: 5}, {x: 13, y: 5}, {x: 14, y: 5}, {x: 15, y: 5}, {x: 16, y: 5}, {x: 17, y: 5}, {x: 9, y: 8}, {x: 10, y: 8}, {x: 9, y: 9}, {x: 10, y: 9}, {x: 5, y: 12}, {x: 6, y: 12}, {x: 7, y: 12}, {x: 12, y: 12}, {x: 13, y: 12}, {x: 14, y: 12}]
 };
 
 const levelTeleports = {
     1: [], 2: [],
-    3: [
-        { x: 0, y: 10, targetX: 19, targetY: 10 },
-        { x: 19, y: 10, targetX: 0, targetY: 10 }
-    ],
-    4: [
-        { x: 0, y: 9, targetX: 19, targetY: 9 },
-        { x: 19, y: 9, targetX: 0, targetY: 9 },
-        { x: 9, y: 0, targetX: 9, targetY: 19 },
-        { x: 9, y: 19, targetX: 9, targetY: 0 }
-    ],
-    5: [
-        { x: 0, y: 2, targetX: 19, targetY: 17 },
-        { x: 19, y: 17, targetX: 0, targetY: 2 },
-        { x: 0, y: 17, targetX: 19, targetY: 2 },
-        { x: 19, y: 2, targetX: 0, targetY: 17 }
-    ]
+    3: [{ x: 0, y: 10, targetX: 19, targetY: 10 }, { x: 19, y: 10, targetX: 0, targetY: 10 }],
+    4: [{ x: 0, y: 9, targetX: 19, targetY: 9 }, { x: 19, y: 9, targetX: 0, targetY: 9 }, { x: 9, y: 0, targetX: 9, targetY: 19 }, { x: 9, y: 19, targetX: 9, targetY: 0 }],
+    5: [{ x: 0, y: 2, targetX: 19, targetY: 17 }, { x: 19, y: 17, targetX: 0, targetY: 2 }, { x: 0, y: 17, targetX: 19, targetY: 2 }, { x: 19, y: 2, targetX: 0, targetY: 17 }]
 };
 
 window.addEventListener('keydown', e => {
@@ -134,15 +100,9 @@ document.querySelectorAll('.opt-btn').forEach(button => {
 actionBtn.addEventListener('click', () => {
     if (!gameRunning) {
         if (isLevelCleared) {
-            if (level === 5) {
-                level = 1; 
-                score = 0;
-            } else {
-                level++; 
-            }
+            if (level === 5) { level = 1; score = 0; } else { level++; }
             startLevel();
         } else {
-            // Oyun hələ başlamayıbsa və ya uduzubsa tam sıfırdan başladır
             level = 1;
             score = 0;
             startLevel();
@@ -151,26 +111,19 @@ actionBtn.addEventListener('click', () => {
 });
 
 function startLevel() {
-    snake = [
-        { x: 10, y: 14 },
-        { x: 10, y: 15 },
-        { x: 10, y: 16 }
-    ];
-    direction = { x: 0, y: -1 }; 
-    nextDirection = { x: 0, y: -1 };
-    
+    snake = [{ x: 10, y: 14 }, { x: 10, y: 15 }, { x: 10, y: 16 }];
+    direction = { x: 0, y: -1 }; nextDirection = { x: 0, y: -1 };
     walls = levelWalls[level] || [];
     teleports = levelTeleports[level] || [];
     
     levelDisplay.innerText = level;
     scoreDisplay.innerText = score;
-    
-    levelScore = 0;
-    portalOpen = false;
-    isLevelCleared = false;
-    nextLevelPortal = { x: -1, y: -1 };
-    goldFood = { x: -1, y: -1 };
-    goldFoodTimer = 0;
+    levelScore = 0; portalOpen = false; isLevelCleared = false;
+    nextLevelPortal = { x: -1, y: -1 }; goldFood = { x: -1, y: -1 }; goldFoodTimer = 0;
+
+    if (chosenMap === "dark") canvas.style.backgroundColor = "#1b1c1e";
+    else if (chosenMap === "desert") canvas.style.backgroundColor = "#e4cd9e";
+    else canvas.style.backgroundColor = "#a3be8c";
 
     generateNormalFood();
     msgOverlay.style.display = 'none';
@@ -189,8 +142,11 @@ function generateNormalFood() {
         
         let onSnake = snake.some(p => p.x === normalFood.x && p.y === normalFood.y);
         let onWall = walls.some(w => w.x === normalFood.x && w.y === normalFood.y);
+        
+        // YENİ: Yeməyin otaq teleportlarının (bənövşəyi kvadratların) üstünə düşməsini yoxlayırıq
         let onTeleport = teleports.some(t => t.x === normalFood.x && t.y === normalFood.y);
         
+        // Əgər ilan, divar və ya portal üstündə DEYİLSƏ, dövrü bitir
         if (!onSnake && !onWall && !onTeleport) break;
     }
 }
@@ -204,6 +160,8 @@ function generateGoldFood() {
         let onSnake = snake.some(p => p.x === goldFood.x && p.y === goldFood.y);
         let onWall = walls.some(w => w.x === goldFood.x && w.y === goldFood.y);
         let onNormalFood = (goldFood.x === normalFood.x && goldFood.y === normalFood.y);
+        
+        // YENİ: Qızıl yeməyin də portal üstünə düşməsini bloklayırıq
         let onTeleport = teleports.some(t => t.x === goldFood.x && t.y === goldFood.y);
         
         if (!onSnake && !onWall && !onNormalFood && !onTeleport) {
@@ -214,10 +172,7 @@ function generateGoldFood() {
 }
 
 function openNextLevelPortal() {
-    portalOpen = true;
-    normalFood = { x: -1, y: -1 };
-    goldFood = { x: -1, y: -1 };
-    goldFoodTimer = 0;
+    portalOpen = true; normalFood = { x: -1, y: -1 }; goldFood = { x: -1, y: -1 }; goldFoodTimer = 0;
     nextLevelPortal = { x: 10, y: 1 };
 }
 
@@ -226,102 +181,63 @@ function update() {
     let head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
     
     let activeTeleport = teleports.find(t => t.x === head.x && t.y === head.y);
-    if (activeTeleport) {
-        head.x = activeTeleport.targetX;
-        head.y = activeTeleport.targetY;
-    } else {
-        if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
-            gameOver();
-            return;
-        }
-    }
+    if (activeTeleport) { head.x = activeTeleport.targetX; head.y = activeTeleport.targetY; }
+    else { if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) { gameOver(); return; } }
 
-    if (portalOpen && head.x === nextLevelPortal.x && head.y === nextLevelPortal.y) {
-        levelComplete();
-        return;
-    }
-    
-    if (walls.some(w => w.x === head.x && w.y === head.y)) {
-        gameOver();
-        return;
-    }
-    
-    if (snake.some(part => part.x === head.x && part.y === head.y)) {
-        gameOver();
-        return;
-    }
+    if (portalOpen && head.x === nextLevelPortal.x && head.y === nextLevelPortal.y) { levelComplete(); return; }
+    if (walls.some(w => w.x === head.x && w.y === head.y)) { gameOver(); return; }
+    if (snake.some(part => part.x === head.x && part.y === head.y)) { gameOver(); return; }
     
     snake.unshift(head);
     
     if (!portalOpen && head.x === normalFood.x && head.y === normalFood.y) {
-        score += 10;
-        levelScore += 10;
-        scoreDisplay.innerText = score;
-        
-        if (levelScore === 30 && goldFoodTimer === 0) {
-            generateGoldFood();
-        }
-        
-        if (levelScore >= 60) {
-            openNextLevelPortal();
-        } else {
-            generateNormalFood();
-        }
+        score += 10; levelScore += 10; scoreDisplay.innerText = score;
+        if (levelScore === 30 && goldFoodTimer === 0) generateGoldFood();
+        if (levelScore >= 60) openNextLevelPortal(); else generateNormalFood();
     } 
     else if (!portalOpen && goldFoodTimer > 0 && head.x === goldFood.x && head.y === goldFood.y) {
-        score += 30;
-        levelScore += 30;
-        scoreDisplay.innerText = score;
-        goldFood = { x: -1, y: -1 };
-        goldFoodTimer = 0;
-        
-        if (levelScore >= 60) {
-            openNextLevelPortal();
-        }
-    } else {
-        snake.pop();
-    }
+        score += 30; levelScore += 30; scoreDisplay.innerText = score;
+        goldFood = { x: -1, y: -1 }; goldFoodTimer = 0;
+        if (levelScore >= 60) openNextLevelPortal();
+    } else { snake.pop(); }
     
-    if (goldFoodTimer > 0) {
-        goldFoodTimer--;
-        if (goldFoodTimer === 0) {
-            goldFood = { x: -1, y: -1 };
-        }
-    }
-    
+    if (goldFoodTimer > 0) { goldFoodTimer--; if (goldFoodTimer === 0) goldFood = { x: -1, y: -1 }; }
     draw();
 }
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    walls.forEach(w => {
-        ctx.fillStyle = "#2e1a05"; 
-        ctx.fillRect(w.x * gridSize, w.y * gridSize, gridSize - 1, gridSize - 1);
-    });
+    ctx.fillStyle = (chosenMap === "dark") ? "#ff0055" : (chosenMap === "desert" ? "#8b5a2b" : "#2e1a05"); 
+    walls.forEach(w => { ctx.fillRect(w.x * gridSize, w.y * gridSize, gridSize - 1, gridSize - 1); });
     
     teleports.forEach(t => {
-        ctx.fillStyle = "#8a2be2";
-        ctx.fillRect(t.x * gridSize, t.y * gridSize, gridSize, gridSize);
-        ctx.strokeStyle = "#ffffff";
-        ctx.strokeRect(t.x * gridSize + 3, t.y * gridSize + 3, gridSize - 6, gridSize - 6);
+        ctx.fillStyle = "#8a2be2"; ctx.fillRect(t.x * gridSize, t.y * gridSize, gridSize, gridSize);
+        ctx.strokeStyle = "#ffffff"; ctx.strokeRect(t.x * gridSize + 3, t.y * gridSize + 3, gridSize - 6, gridSize - 6);
     });
     
     if (portalOpen) {
-        ctx.fillStyle = "#00bfff"; 
-        ctx.fillRect(nextLevelPortal.x * gridSize, nextLevelPortal.y * gridSize, gridSize, gridSize);
-        ctx.strokeStyle = "#ffffff";
-        ctx.strokeRect(nextLevelPortal.x * gridSize + 2, nextLevelPortal.y * gridSize + 2, gridSize - 4, gridSize - 4);
+        ctx.fillStyle = "#00bfff"; ctx.fillRect(nextLevelPortal.x * gridSize, nextLevelPortal.y * gridSize, gridSize, gridSize);
     }
     
     snake.forEach((part, index) => {
-        ctx.fillStyle = index === 0 ? "#051105" : "#1c3c1e";
+        if (chosenSkin === "neon") { ctx.fillStyle = index === 0 ? "#00ffff" : "#0088cc"; } 
+        else if (chosenSkin === "lava") { ctx.fillStyle = index === 0 ? "#ff3300" : "#ff9900"; } 
+        else { ctx.fillStyle = index === 0 ? "#051105" : "#1c3c1e"; }
         ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize - 2, gridSize - 2);
     });
     
     if (!portalOpen && normalFood.x !== -1) {
-        ctx.fillStyle = "#0f2510";
-        ctx.fillRect(normalFood.x * gridSize + 5, normalFood.y * gridSize + 5, gridSize - 10, gridSize - 10);
+        ctx.fillStyle = (chosenMap === "dark") ? "#00ffcc" : "#0f2510";
+        if (chosenFood === "circle") {
+            ctx.beginPath();
+            let centerX = normalFood.x * gridSize + gridSize / 2;
+            let centerY = normalFood.y * gridSize + gridSize / 2;
+            ctx.arc(centerX, centerY, gridSize / 2 - 3, 0, 2 * Math.PI);
+            ctx.fill();
+        } else {
+            ctx.fillRect(normalFood.x * gridSize + 5, normalFood.y * gridSize + 5, gridSize - 10, gridSize - 10);
+        }
     }
     
     if (!portalOpen && goldFoodTimer > 0) {
@@ -339,22 +255,18 @@ function gameOver() {
 }
 
 function levelComplete() {
-    gameRunning = false;
-    isLevelCleared = true; 
-    clearInterval(gameInterval);
-    
+    gameRunning = false; isLevelCleared = true; clearInterval(gameInterval);
+    designMenuBtn.style.display = "none"; // Səviyyə keçidində qarışıqlıq olmasın deyə gizlət
     if (level === 5) {
-        msgTitle.innerText = "TEBRİKLƏR, QALİBSİNİZ!";
-        msgSub.innerText = "Bütün 5 otağı tam təmizlədiniz! Yenidən oynamaq üçün klikləyin.";
+        menuTitle.innerText = "TEBRİKLƏR, QALİBSİNİZ!"; 
+        actionBtn.innerText = "REPLAY GAME";
     } else {
-        msgTitle.innerText = "OTAQ TAMAMLANDI!";
-        msgSub.innerText = `Portaldan keçdin! Seviyyə ${level + 1} üçün bura klikləyin.`;
+        menuTitle.innerText = "OTAQ TAMAMLANDI!"; 
+        actionBtn.innerText = `START LEVEL ${level + 1}`;
     }
     msgOverlay.style.display = 'flex';
 }
 
-// --- BU HİSSƏ YENİDİR ---
-// Sayt ilk dəfə açılanda oyunu başlatmır, sadəcə Start ekranını göstərir:
 function showStartScreen() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     gameRunning = false; isLevelCleared = false;
@@ -366,5 +278,4 @@ function showStartScreen() {
     msgOverlay.style.display = 'flex';
 }
 
-// Oyunu start vəziyyətinə gətiririk
 showStartScreen();
