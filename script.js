@@ -3,8 +3,14 @@ const ctx = canvas.getContext('2d');
 const scoreDisplay = document.getElementById('scoreDisplay');
 const levelDisplay = document.getElementById('levelDisplay');
 const msgOverlay = document.getElementById('msgOverlay');
-const msgTitle = document.getElementById('msgTitle');
-const msgSub = document.getElementById('msgSub');
+
+// Menyu Ekranları və Düymələr
+const mainStartScreen = document.getElementById('mainStartScreen');
+const designScreen = document.getElementById('designScreen');
+const menuTitle = document.getElementById('menuTitle');
+const actionBtn = document.getElementById('actionBtn');
+const designMenuBtn = document.getElementById('designMenuBtn');
+const backMenuBtn = document.getElementById('backMenuBtn');
 
 const gridSize = 20; 
 canvas.width = 400;
@@ -35,6 +41,11 @@ let portalOpen = false;
 let teleports = []; 
 
 // 5 Səviyyə üçün divar xəritələri
+// Seçilmiş Dizayn Dəyişənləri (Default: İlk düymələr)
+let chosenSkin = "classic";
+let chosenMap = "retro";
+let chosenFood = "square";
+
 const levelWalls = {
     1: [], 
     2: [   
@@ -89,7 +100,38 @@ window.addEventListener('keydown', e => {
     }
 });
 
-msgOverlay.addEventListener('click', () => {
+// MENYU IDARƏETMƏ LİSTENERLƏRİ
+designMenuBtn.addEventListener('click', () => {
+    mainStartScreen.style.display = "none";
+    designScreen.style.display = "flex";
+});
+
+backMenuBtn.addEventListener('click', () => {
+    designScreen.style.display = "none";
+    mainStartScreen.style.display = "flex";
+});
+
+// Ekrandakı Dizayn Düymələrinə klikləmə məntiqi
+document.querySelectorAll('.opt-btn').forEach(button => {
+    button.addEventListener('click', (e) => {
+        const group = e.target.parentElement;
+        const type = group.getAttribute('data-type');
+        const val = e.target.getAttribute('data-val');
+        
+        // Kliklənən qrupdakı köhnə seçilmiş düyməni sıfırla
+        group.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+        // Yenisini aktiv et
+        e.target.classList.add('selected');
+        
+        // JavaScript dəyişənini yenilə
+        if (type === "skin") chosenSkin = val;
+        if (type === "map") chosenMap = val;
+        if (type === "food") chosenFood = val;
+    });
+});
+
+// ƏSAS OYUNU BAŞLATMA / DAVAM ETDİRMƏ DÜYMƏSİ
+actionBtn.addEventListener('click', () => {
     if (!gameRunning) {
         if (isLevelCleared) {
             if (level === 5) {
@@ -131,7 +173,6 @@ function startLevel() {
     goldFoodTimer = 0;
 
     generateNormalFood();
-    
     msgOverlay.style.display = 'none';
     gameRunning = true;
     
