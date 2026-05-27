@@ -331,11 +331,10 @@ function draw() {
 }
 
 function gameOver() {
-    gameRunning = false;
-    isLevelCleared = false; 
-    clearInterval(gameInterval);
-    msgTitle.innerText = "OYUN BİTDİ";
-    msgSub.innerText = "Yenidən başlamaq üçün klikləyin";
+    gameRunning = false; isLevelCleared = false; clearInterval(gameInterval);
+    menuTitle.innerText = "OYUN BİTDİ"; 
+    actionBtn.innerText = "PLAY AGAIN";
+    designMenuBtn.style.display = "block"; // Dizayn düyməsini yenidən göstər
     msgOverlay.style.display = 'flex';
 }
 
@@ -358,11 +357,12 @@ function levelComplete() {
 // Sayt ilk dəfə açılanda oyunu başlatmır, sadəcə Start ekranını göstərir:
 function showStartScreen() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    gameRunning = false;
-    isLevelCleared = false;
-    
-    msgTitle.innerText = "PORTAL SNAKE";
-    msgSub.innerText = "START THE GAME";
+    gameRunning = false; isLevelCleared = false;
+    menuTitle.innerText = "PORTAL SNAKE";
+    actionBtn.innerText = "START THE GAME";
+    designMenuBtn.style.display = "block"; 
+    mainStartScreen.style.display = "flex";
+    designScreen.style.display = "none";
     msgOverlay.style.display = 'flex';
 }
 
