@@ -1,0 +1,77 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #1a1a1a; /* Qaranlıq otaq ab-havası */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Courier New', Courier, monospace;
+    user-select: none;
+    overflow: hidden;
+}
+
+/* Telefonun ekran çərçivəsi */
+.game-container {
+    background-color: #9bbc0f; /* Klassik GameBoy / Nokia yaşıl ekranı */
+    border: 16px solid #333;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    position: relative;
+}
+
+/* Üst məlumat paneli */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    font-weight: bold;
+    color: #0f2510;
+    border-bottom: 3px double #0f2510;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+/* Canvas (Oyun sahəsi) */
+canvas {
+    background-color: #a3be8c; /* Portalların yaxşı görünməsi üçün bir az daha təmiz yaşıl fon */
+    display: block;
+    border: 3px solid #0f2510;
+}
+
+/* Səviyyə keçidində və ya uduzanda çıxan örtük panel */
+.overlay {
+    position: absolute;
+    top: 55px;
+    left: 15px;
+    width: 400px;
+    height: 400px;
+    background-color: rgba(163, 190, 140, 0.95); /* Fonla uyğun şəffaf örtük */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #0f2510;
+    text-align: center;
+    cursor: pointer;
+    padding: 20px;
+}
+
+.overlay h2 {
+    font-size: 28px;
+    margin-bottom: 15px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.overlay p {
+    font-size: 16px;
+    border: 2px dashed #0f2510;
+    padding: 8px 12px;
+    background-color: rgba(0, 0, 0, 0.05);
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal & Labirint İlan Oyunu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="game-container">
+        <div class="top-bar">
+            <div>Seviyyə: <span id="levelDisplay">1</span></div>
+            <div>Xal: <span id="scoreDisplay">0</span></div>
+        </div>
+        
+        <canvas id="gameCanvas"></canvas>
+        
+        <div id="msgOverlay" class="overlay" style="display: none;">
+            <h2 id="msgTitle">OYUN BİTDİ</h2>
+            <p id="msgSub">Davam etmək üçün bura klikləyin</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
