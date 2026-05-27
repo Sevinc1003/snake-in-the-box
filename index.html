@@ -16,9 +16,46 @@
         
         <canvas id="gameCanvas"></canvas>
         
-        <div id="msgOverlay" class="overlay" style="display: none;">
-            <h2 id="msgTitle">OYUN BİTDİ</h2>
-            <p id="msgSub">Davam etmək üçün bura klikləyin</p>
+        <div id="msgOverlay" class="overlay">
+            
+            <div id="mainStartScreen" class="menu-screen">
+                <h2 id="menuTitle">PORTAL SNAKE</h2>
+                <button id="actionBtn" class="menu-btn">START GAME</button>
+                <button id="designMenuBtn" class="menu-btn design-btn">DESIGN</button>
+            </div>
+
+            <div id="designScreen" class="menu-screen" style="display: none;">
+                <h2 class="design-title">CUSTOMIZE</h2>
+                
+                <div class="design-group">
+                    <h3>İLAN (SKIN)</h3>
+                    <div class="options-grid" data-type="skin">
+                        <button class="opt-btn selected" data-val="classic">Klassik</button>
+                        <button class="opt-btn" data-val="neon">Neon Mavi</button>
+                        <button class="opt-btn" data-val="lava">Lava</button>
+                    </div>
+                </div>
+
+                <div class="design-group">
+                    <h3>OTAQ (MAP)</h3>
+                    <div class="options-grid" data-type="map">
+                        <button class="opt-btn selected" data-val="retro">Retro</button>
+                        <button class="opt-btn" data-val="dark">Kiber</button>
+                        <button class="opt-btn" data-val="desert">Səhra</button>
+                    </div>
+                </div>
+
+                <div class="design-group">
+                    <h3>YEMƏK (FOOD)</h3>
+                    <div class="options-grid" data-type="food">
+                        <button class="opt-btn selected" data-val="square">Kvadrat</button>
+                        <button class="opt-btn" data-val="circle">Dairə</button>
+                    </div>
+                </div>
+
+                <button id="backMenuBtn" class="menu-btn back-btn">BACK</button>
+            </div>
+
         </div>
     </div>
 

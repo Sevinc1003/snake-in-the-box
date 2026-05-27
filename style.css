@@ -62,16 +62,90 @@ canvas {
     padding: 20px;
 }
 
-.overlay h2 {
-    font-size: 28px;
-    margin-bottom: 15px;
+/* Ekran keçidləri üçün əsas çərçivə */
+.menu-screen {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-screen h2 {
+    font-size: 30px;
     font-weight: 900;
+    margin-bottom: 25px;
     letter-spacing: 1px;
 }
 
-.overlay p {
+/* Baş menyu və idarəetmə düymələri */
+.menu-btn {
+    width: 75%;
+    background-color: #0f2510;
+    color: #a3be8c;
+    border: 2px solid #0f2510;
+    font-family: 'Courier New', Courier, monospace;
     font-size: 16px;
-    border: 2px dashed #0f2510;
-    padding: 8px 12px;
-    background-color: rgba(0, 0, 0, 0.05);
+    font-weight: bold;
+    padding: 12px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+.menu-btn:hover {
+    background-color: transparent;
+    color: #0f2510;
+}
+
+/* Dizayn bölməsi elementləri */
+.design-title {
+    font-size: 24px !important;
+    margin-bottom: 15px !important;
+    border-bottom: 2px solid #0f2510;
+}
+
+.design-group {
+    width: 90%;
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+.design-group h3 {
+    font-size: 12px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #2b4c2d;
+}
+
+/* Seçim düymələrinin ekranda yan-yana düzülməsi */
+.options-grid {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.opt-btn {
+    flex: 1;
+    background-color: transparent;
+    color: #0f2510;
+    border: 2px solid #0f2510;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 6px 2px;
+    cursor: pointer;
+}
+
+/* AKTİV SEÇİLMİŞ DÜYMƏNİN STİLİ */
+.opt-btn.selected {
+    background-color: #0f2510;
+    color: #a3be8c;
+}
+
+.back-btn {
+    width: 40%;
+    padding: 6px;
+    margin-top: 10px;
+    font-size: 14px;
 }
