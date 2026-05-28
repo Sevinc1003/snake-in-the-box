@@ -4,7 +4,7 @@ const scoreDisplay = document.getElementById('scoreDisplay');
 const levelDisplay = document.getElementById('levelDisplay');
 const msgOverlay = document.getElementById('msgOverlay');
 
-// Menyu Ekranları və Düymələr
+// Menu Screens and Buttons
 const mainStartScreen = document.getElementById('mainStartScreen');
 const designScreen = document.getElementById('designScreen');
 const menuTitle = document.getElementById('menuTitle');
@@ -37,7 +37,7 @@ let nextLevelPortal = { x: -1, y: -1 };
 let portalOpen = false;
 let teleports = []; 
 
-// Seçilmiş Dizayn Dəyişənləri (Default: İlk düymələr)
+// Chosen Design Variables (Default: First buttons)
 let chosenSkin = "classic";
 let chosenMap = "retro";
 let chosenFood = "square";
@@ -66,7 +66,7 @@ window.addEventListener('keydown', e => {
     }
 });
 
-// MENYU IDARƏETMƏ LİSTENERLƏRİ
+// MENU CONTROL LISTENERS
 designMenuBtn.addEventListener('click', () => {
     mainStartScreen.style.display = "none";
     designScreen.style.display = "flex";
@@ -77,26 +77,26 @@ backMenuBtn.addEventListener('click', () => {
     mainStartScreen.style.display = "flex";
 });
 
-// Ekrandakı Dizayn Düymələrinə klikləmə məntiqi
+// Customization button click logic
 document.querySelectorAll('.opt-btn').forEach(button => {
     button.addEventListener('click', (e) => {
         const group = e.target.parentElement;
         const type = group.getAttribute('data-type');
         const val = e.target.getAttribute('data-val');
         
-        // Kliklənən qrupdakı köhnə seçilmiş düyməni sıfırla
+        // Reset previously selected button in the group
         group.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
-        // Yenisini aktiv et
+        // Activate the new one
         e.target.classList.add('selected');
         
-        // JavaScript dəyişənini yenilə
+        // Update the JavaScript variable
         if (type === "skin") chosenSkin = val;
         if (type === "map") chosenMap = val;
         if (type === "food") chosenFood = val;
     });
 });
 
-// ƏSAS OYUNU BAŞLATMA / DAVAM ETDİRMƏ DÜYMƏSİ
+// MAIN GAME START / CONTINUE BUTTON
 actionBtn.addEventListener('click', () => {
     if (!gameRunning) {
         if (isLevelCleared) {
@@ -143,10 +143,10 @@ function generateNormalFood() {
         let onSnake = snake.some(p => p.x === normalFood.x && p.y === normalFood.y);
         let onWall = walls.some(w => w.x === normalFood.x && w.y === normalFood.y);
         
-        // YENİ: Yeməyin otaq teleportlarının (bənövşəyi kvadratların) üstünə düşməsini yoxlayırıq
+        // Check if food spawns on top of room teleports (purple squares)
         let onTeleport = teleports.some(t => t.x === normalFood.x && t.y === normalFood.y);
         
-        // Əgər ilan, divar və ya portal üstündə DEYİLSƏ, dövrü bitir
+        // If not on snake, wall, or portal, break the loop
         if (!onSnake && !onWall && !onTeleport) break;
     }
 }
@@ -161,7 +161,7 @@ function generateGoldFood() {
         let onWall = walls.some(w => w.x === goldFood.x && w.y === goldFood.y);
         let onNormalFood = (goldFood.x === normalFood.x && goldFood.y === normalFood.y);
         
-        // YENİ: Qızıl yeməyin də portal üstünə düşməsini bloklayırıq
+        // Prevent gold food from spawning on top of portals
         let onTeleport = teleports.some(t => t.x === goldFood.x && t.y === goldFood.y);
         
         if (!onSnake && !onWall && !onNormalFood && !onTeleport) {
@@ -248,20 +248,20 @@ function draw() {
 
 function gameOver() {
     gameRunning = false; isLevelCleared = false; clearInterval(gameInterval);
-    menuTitle.innerText = "OYUN BİTDİ"; 
+    menuTitle.innerText = "GAME OVER"; 
     actionBtn.innerText = "PLAY AGAIN";
-    designMenuBtn.style.display = "block"; // Dizayn düyməsini yenidən göstər
+    designMenuBtn.style.display = "block"; // Show design button again
     msgOverlay.style.display = 'flex';
 }
 
 function levelComplete() {
     gameRunning = false; isLevelCleared = true; clearInterval(gameInterval);
-    designMenuBtn.style.display = "none"; // Səviyyə keçidində qarışıqlıq olmasın deyə gizlət
+    designMenuBtn.style.display = "none"; // Hide to avoid confusion during level transition
     if (level === 5) {
-        menuTitle.innerText = "TEBRİKLƏR, QALİBSİNİZ!"; 
+        menuTitle.innerText = "CONGRATULATIONS!"; 
         actionBtn.innerText = "REPLAY GAME";
     } else {
-        menuTitle.innerText = "OTAQ TAMAMLANDI!"; 
+        menuTitle.innerText = "ROOM CLEARED!"; 
         actionBtn.innerText = `START LEVEL ${level + 1}`;
     }
     msgOverlay.style.display = 'flex';
@@ -270,7 +270,7 @@ function levelComplete() {
 function showStartScreen() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     gameRunning = false; isLevelCleared = false;
-    menuTitle.innerText = "PORTAL SNAKE";
+    menuTitle.innerText = "SNAKE IN THE BOX";
     actionBtn.innerText = "START THE GAME";
     designMenuBtn.style.display = "block"; 
     mainStartScreen.style.display = "flex";

@@ -56,7 +56,7 @@ canvas {
     padding: 15px;
 }
 
-/* Ekran keçidləri üçün əsas çərçivə */
+/* Main container for menu screens */
 .menu-screen {
     width: 100%;
     display: flex;
@@ -72,7 +72,7 @@ canvas {
     letter-spacing: 1px;
 }
 
-/* Baş menyu və idarəetmə düymələri */
+/* Main menu and action buttons */
 .menu-btn {
     width: 75%;
     background-color: #0f2510;
@@ -92,7 +92,7 @@ canvas {
     color: #0f2510;
 }
 
-/* Dizayn bölməsi elementləri */
+/* Customization section elements */
 .design-title {
     font-size: 24px !important;
     margin-bottom: 15px !important;
@@ -112,7 +112,7 @@ canvas {
     color: #2b4c2d;
 }
 
-/* Seçim düymələrinin ekranda yan-yana düzülməsi */
+/* Aligning option buttons side-by-side */
 .options-grid {
     display: flex;
     gap: 8px;
@@ -131,7 +131,7 @@ canvas {
     cursor: pointer;
 }
 
-/* AKTİV SEÇİLMİŞ DÜYMƏNİN STİLİ */
+/* STYLE FOR THE ACTIVE/SELECTED BUTTON */
 .opt-btn.selected {
     background-color: #0f2510;
     color: #a3be8c;

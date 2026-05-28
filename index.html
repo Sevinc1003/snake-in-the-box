@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="az">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal & Labirint İlan Oyunu</title>
+    <title>Snake in the Box</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="game-container">
         <div class="top-bar">
-            <div>Seviyyə: <span id="levelDisplay">1</span></div>
-            <div>Xal: <span id="scoreDisplay">0</span></div>
+            <div>Level: <span id="levelDisplay">1</span></div>
+            <div>Score: <span id="scoreDisplay">0</span></div>
         </div>
         
         <canvas id="gameCanvas"></canvas>
@@ -19,7 +19,7 @@
         <div id="msgOverlay" class="overlay">
             
             <div id="mainStartScreen" class="menu-screen">
-                <h2 id="menuTitle">PORTAL SNAKE</h2>
+                <h2 id="menuTitle">SNAKE IN THE BOX</h2>
                 <button id="actionBtn" class="menu-btn">START GAME</button>
                 <button id="designMenuBtn" class="menu-btn design-btn">DESIGN</button>
             </div>
@@ -28,28 +28,28 @@
                 <h2 class="design-title">CUSTOMIZE</h2>
                 
                 <div class="design-group">
-                    <h3>İLAN (SKIN)</h3>
+                    <h3>SNAKE (SKIN)</h3>
                     <div class="options-grid" data-type="skin">
-                        <button class="opt-btn selected" data-val="classic">Klassik</button>
-                        <button class="opt-btn" data-val="neon">Neon Mavi</button>
+                        <button class="opt-btn selected" data-val="classic">Classic</button>
+                        <button class="opt-btn" data-val="neon">Neon Blue</button>
                         <button class="opt-btn" data-val="lava">Lava</button>
                     </div>
                 </div>
 
                 <div class="design-group">
-                    <h3>OTAQ (MAP)</h3>
+                    <h3>ROOM (MAP)</h3>
                     <div class="options-grid" data-type="map">
                         <button class="opt-btn selected" data-val="retro">Retro</button>
-                        <button class="opt-btn" data-val="dark">Kiber</button>
-                        <button class="opt-btn" data-val="desert">Səhra</button>
+                        <button class="opt-btn" data-val="dark">Cyber</button>
+                        <button class="opt-btn" data-val="desert">Desert</button>
                     </div>
                 </div>
 
                 <div class="design-group">
-                    <h3>YEMƏK (FOOD)</h3>
+                    <h3>FOOD</h3>
                     <div class="options-grid" data-type="food">
-                        <button class="opt-btn selected" data-val="square">Kvadrat</button>
-                        <button class="opt-btn" data-val="circle">Dairə</button>
+                        <button class="opt-btn selected" data-val="square">Square</button>
+                        <button class="opt-btn" data-val="circle">Circle</button>
                     </div>
                 </div>
 
