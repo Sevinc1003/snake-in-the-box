@@ -21,6 +21,23 @@ A modern, responsive, and feature-rich twist on the classic Snake game, introduc
 ---
 
 ## 🕹️ Controls
+## 🕹️ How to Play
+
+### 🎯 Objectives
+* **Your Goal:** Earn **60 points** in each room to open the Blue Level Gateway, then navigate the snake into it to progress.
+* **Winning the Game:** Complete all 5 levels sequentially and pass through the final gateway to secure a total victory.
+* **Losing the Game:** The game ends immediately if you crash into a static wall obstacle, run into the outer map boundaries (where no portal is active), or bite your own tail.
+
+### 🎮 Controls
+* **💻 On Desktop:** Use the standard keyboard arrow keys:
+  * ⬆️ **Arrow Up:** Move Up
+  * ⬇️ **Arrow Down:** Move Down
+  * ⬅️ **Arrow Left:** Move Left
+  * ➡️ **Arrow Right:** Move Right
+* **📱 On Mobile:** Swipe anywhere on the screen in your desired direction (Up, Down, Left, Right).
+
+---
+
 
 ### 💻 On Desktop:
 * **Arrow Keys:** ⬆️ Up, ⬇️ Down, ⬅️ Left, ➡️ Right to change directions.
