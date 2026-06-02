@@ -19,29 +19,12 @@ A modern, responsive, and feature-rich twist on the classic Snake game, introduc
 * **Smart Spawning Algorithm:** Bug-free coordinate generation ensures that normal food, gold items, and portals never spawn inside walls or overlap with each other.
 
 ---
-
-## 🕹️ Controls
-## 🕹️ How to Play
-
-### 🎯 Objectives
-* **Your Goal:** Earn **60 points** in each room to open the Blue Level Gateway, then navigate the snake into it to progress.
-* **Winning the Game:** Complete all 5 levels sequentially and pass through the final gateway to secure a total victory.
-* **Losing the Game:** The game ends immediately if you crash into a static wall obstacle, run into the outer map boundaries (where no portal is active), or bite your own tail.
-
-### 🎮 Controls
+## 🕹️ Controls & Navigation Mechanics
 * **💻 On Desktop:** Use the standard keyboard arrow keys:
-  * ⬆️ **Arrow Up:** Move Up
-  * ⬇️ **Arrow Down:** Move Down
-  * ⬅️ **Arrow Left:** Move Left
-  * ➡️ **Arrow Right:** Move Right
-* **📱 On Mobile:** Swipe anywhere on the screen in your desired direction (Up, Down, Left, Right).
-
+  * ⬆️ **Arrow Up / ⬇️ Arrow Down / ⬅️ Arrow Left / ➡️ Arrow Right** to instantly change directions.
+* **📱 On Mobile:** Swipe anywhere on the screen in your desired direction (Up, Down, Left, Right) utilizing smooth touch gestures.
+* **Entity - The Snake:** The player-controlled entity that continuously moves forward on the grid based on these inputs.
 ---
-
-
-### 💻 On Desktop:
-* **Arrow Keys:** ⬆️ Up, ⬇️ Down, ⬅️ Left, ➡️ Right to change directions.
-  
 ---
 
 ## 🛠️ Built With
