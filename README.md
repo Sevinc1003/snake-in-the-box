@@ -30,12 +30,18 @@ A modern, responsive, and feature-rich twist on the classic Snake game, introduc
 * **Self-Biting:** Colliding with the snake's own expanding tail triggers an immediate collision event.
 * **Room Portals (Teleports):** Linked pairs of purple coordinates located on the grid edges. Stepping into one instantly triggers an interaction that shifts the snake's head to the corresponding exit portal.
 ---
-
-## 🛠️ Built With
-
-* **HTML5** (Canvas API for graphics rendering)
-* **CSS3** (Responsive design, Flexbox layout, and mobile-first styling)
-* **JavaScript (ES6+)** (Game loop logic, collision detection algorithms, and touch event handling)
-
+## 🏆 Scoring Dynamics & Lose Conditions
+* **Normal Food:** A standard collectible that awards **+10 points** and expands the snake. Spawns randomly on clear tiles.
+* **Gold Food:** A rare, high-value item that spawns briefly once the player crosses a 30-point threshold. Awards **+30 points**.
+* **Lose Condition:** The game loop terminates instantly if any collision condition (wall, tail, or non-portal boundary) returns true.
+* **Next-Level Gateway:** Accumulate **60 points** to open the blue portal. Entering it transitions you safely to the next stage.
+---
+## 🎨 User Interface Overlays & Personalization Menu
+* **Start Screen Overlay:** An initial landing layout hosting game options and the core "Play" trigger.
+* **Game Over Overlay:** Displays the final summary stats and score breakdown immediately upon termination.
+* **Design Menu (Customization):**
+  * *Snake Skin:* Classic, Neon Blue, Lava.
+  * *Map Environment:* Retro, Cyber, Desert.
+  * *Food Shape:* Square, Circle.
 ---
 If you enjoyed this project, feel free to drop a star (⭐) on the repository!
