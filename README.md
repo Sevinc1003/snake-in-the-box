@@ -7,15 +7,6 @@ A modern, responsive, and feature-rich twist on the classic Snake game, introduc
 ## 🗺️ Game Overview & Sketch
 In **Snake in the Box**, players navigate a highly customizable snake through a series of increasingly difficult rooms (Levels 1 to 5). Unlike traditional snake games, moving through designated edge tiles acts as a wormhole, warping the player across map coordinates while testing their reflexes against strategic obstacles.
 
-* **Room Portals (Teleport):** On specific levels, enter the purple cells at the edges of the map to instantly warp to the opposite side.
-* **Next-Level Gateway:** Accumulate 60 points to open the blue portal. Entering it transitions you safely to the next stage.
-* **Gold Food:** Spawns briefly once you reach 30 points, offering a high-score bonus (+30 points) if you can catch it in time.
-* **Design Menu (Customization):**
-    * *Snake Skin:* Classic, Neon Blue, Lava.
-    * *Map Environment:* Retro, Cyber, Desert.
-    * *Food Shape:* Square, Circle.
-* **Full Mobile Support:** Clean user interface free of bulky on-screen buttons. Control the snake smoothly using natural touch gestures.
-* **Smart Spawning Algorithm:** Bug-free coordinate generation ensures that normal food, gold items, and portals never spawn inside walls or overlap with each other.
 Here is the structural design concept created in Excalidraw:
 ![Snake in the Box Architecture Sketch](/sketch.png)
 
