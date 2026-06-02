@@ -25,6 +25,10 @@ A modern, responsive, and feature-rich twist on the classic Snake game, introduc
 * **📱 On Mobile:** Swipe anywhere on the screen in your desired direction (Up, Down, Left, Right) utilizing smooth touch gestures.
 * **Entity - The Snake:** The player-controlled entity that continuously moves forward on the grid based on these inputs.
 ---
+## 💥 Collision Logic & Interaction Constraints
+* **Obstacle Matrix:** Level-specific static walls are arranged in challenging layouts. Hitting a wall or the outer bounds triggers a crash.
+* **Self-Biting:** Colliding with the snake's own expanding tail triggers an immediate collision event.
+* **Room Portals (Teleports):** Linked pairs of purple coordinates located on the grid edges. Stepping into one instantly triggers an interaction that shifts the snake's head to the corresponding exit portal.
 ---
 
 ## 🛠️ Built With
